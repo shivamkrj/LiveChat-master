@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         pass = password.getText().toString().trim();
         if(uName!=""&&pass!= ""){
             //Registeration:
-            if(allUsersMap.containsKey(uName)){
+                if(allUsersMap.containsKey(uName)){
                 Toast.makeText(this,"User Already Exists",Toast.LENGTH_SHORT).show();
             }else{
                 Integer size = allUsersMap.size();

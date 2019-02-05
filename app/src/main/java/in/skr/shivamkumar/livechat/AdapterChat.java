@@ -1,6 +1,7 @@
 package in.skr.shivamkumar.livechat;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +30,9 @@ public class AdapterChat extends RecyclerView.Adapter<ViewHolderChat> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolderChat holder, int position) {
         ChatData chatData = itemsList.get(position);
+        boolean isDoctor = chatData.isDoctor;
+        if(isDoctor)
+            holder.cardView.setCardBackgroundColor(Color.YELLOW);
         holder.message1.setText(chatData.message);
 
     }
