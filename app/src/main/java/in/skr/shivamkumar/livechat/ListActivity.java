@@ -1,5 +1,6 @@
 package in.skr.shivamkumar.livechat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class ListActivity extends AppCompatActivity {
     String username;
     public Boolean isDoctor=false;
     public long x=0;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,9 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        pd = new ProgressDialog(this);
+        pd.setMessage("loading");
+        pd.show();
         if(isDoctor){
             fetchForDoctor();
         }else
@@ -84,16 +89,17 @@ public class ListActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                x=dataSnapshot.getChildrenCount()   ;
+                x=dataSnapshot.getChildrenCount();
+                if(x==0){
+                    databaseReference.push().setValue(username);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        if(x==0){
-            databaseReference.push().setValue(username);
-        }
+
         String referenceString = doctorUsername+username;
         Intent intent1 = new Intent(ListActivity.this,ChatActivity.class);
         intent1.putExtra("REFERENCESTRING",referenceString);
@@ -106,6 +112,7 @@ public class ListActivity extends AppCompatActivity {
         firebaseDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                pd.dismiss();
                 String ss = dataSnapshot.getValue(String.class);
                 chatList.add(ss);
                 adapter.notifyDataSetChanged();
@@ -138,6 +145,7 @@ public class ListActivity extends AppCompatActivity {
         firebaseDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                pd.dismiss();
                 String ss = dataSnapshot.getValue(String.class);
                 chatList.add(ss);
 //                Toast.makeText(ListActivity.this,ss,Toast.LENGTH_SHORT).show();

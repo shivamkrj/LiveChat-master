@@ -74,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this,ListActivity.class);
                     intent.putExtra("USERNAME",uName);
                     startActivity(intent);
-                }
+                }else
+                    Toast.makeText(MainActivity.this,"Wrong Username/Password ",Toast.LENGTH_SHORT).show();
+
+
             }else{
                 Toast.makeText(MainActivity.this,"Wrong Username/Password ",Toast.LENGTH_SHORT).show();
 
